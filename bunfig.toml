@@ -1,8 +1,8 @@
 [install]
 
-native_mode_builtins: true
+native_mode_builtins = true
 
 [moduleResolution]
 
-extensions: [".ts", ".tsx", ".js", ".jsx"]
+extensions = [".ts", ".tsx", ".js", ".jsx"]
 
