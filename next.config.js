@@ -6,17 +6,20 @@ import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
 const config = {
-    images:{
-        remotePatterns: [
-            {
-              protocol: 'https',
-              hostname: 'cdn.pirrot.de',
-              port: '',
-              pathname: '/storage/**',
-            },
+  experimental: {
+    esmExternals: 'loose'
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.miomideal.com',
+        port: '',
+        pathname: '/storage/**',
+      },
 
-          ],
-    }
+    ],
+  }
 };
 
 export default config;
