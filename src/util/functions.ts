@@ -4,7 +4,7 @@
  */
 
 // Import crypto directly to ensure availability
-import * as crypto from 'node:crypto';
+import * as crypto from 'crypto';
 
 // Configuration
 const SALT = "DNzFg9cfr8LYjvBKQkCJz+2q2R0SMRC9tmfAQWGx6d4=";
@@ -13,17 +13,17 @@ const CHARSET = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
 export function generateSecureApiKey(prefix = 'm10_', length = 36): string {
   // Calculate the length of the random portion
   const randomLength = Math.max(length - prefix.length, 8); // Ensure minimum secure length
-  
+
   // Generate cryptographically secure random bytes using imported crypto
   const randomBytes = crypto.randomBytes(randomLength);
-  
+
   // Build entropy sources
   const timestamp = Date.now().toString(36);
   const randomHex = randomBytes.toString('hex');
-  
+
   // Combine entropy sources with salt for hashing
   const entropySource = timestamp + randomHex + SALT;
-  
+
   // Create a more sophisticated hash using a simple implementation of FNV-1a
   let hash = 2166136261; // FNV offset basis
   for (let i = 0; i < entropySource.length; i++) {
@@ -31,7 +31,7 @@ export function generateSecureApiKey(prefix = 'm10_', length = 36): string {
     hash *= 16777619; // FNV prime
     hash |= 0; // Convert to 32bit integer
   }
-  
+
   // Generate the base random ID
   let id = '';
   for (let i = 0; i < randomLength; i++) {
@@ -39,7 +39,7 @@ export function generateSecureApiKey(prefix = 'm10_', length = 36): string {
     const randomIndex = randomBytes[i]! % CHARSET.length;
     id += CHARSET[randomIndex];
   }
-  
+
   // Inject hash-derived characters for additional uniqueness
   const hashString = Math.abs(hash).toString(36);
   for (let i = 0; i < Math.min(hashString.length, randomLength / 3); i++) {
@@ -47,10 +47,10 @@ export function generateSecureApiKey(prefix = 'm10_', length = 36): string {
     const hashCharIndex = hashString.charCodeAt(i) % CHARSET.length;
     id = id.substring(0, insertIndex) + CHARSET[hashCharIndex] + id.substring(insertIndex + 1);
   }
-  
+
   // Ensure we have the exact length requested
   id = id.substring(0, randomLength);
-  
+
   // Return the final key with prefix
   return prefix + id;
 }
@@ -78,19 +78,19 @@ export function muid(prefix = 'm10_', length = 36): string {
 }
 
 
-export function makeRandomNumber():number {
-    const number = Math.floor(Math.random() * 9)
-    return number
+export function makeRandomNumber(): number {
+  const number = Math.floor(Math.random() * 9)
+  return number
 }
 
-export function getPercent(amt:number, from: number): number{
-  const percent = ( amt / from ) * 100 
+export function getPercent(amt: number, from: number): number {
+  const percent = (amt / from) * 100
   return percent
 }
 
-export function getMaxUsage(status="active"):number{
+export function getMaxUsage(status = "active"): number {
   let max_usage = 20000
-  if(status !== "active"){
+  if (status !== "active") {
     max_usage = 100
   }
   return max_usage
@@ -98,7 +98,7 @@ export function getMaxUsage(status="active"):number{
 
 export function calcSize(
   bytes: number
-) :string {
+): string {
   const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
   let size = bytes;
   let unitIndex = 0;
